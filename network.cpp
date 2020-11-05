@@ -3,7 +3,7 @@
 
 #include "network.h"
 
-network::~network()
+Network::~network()
 {
     for (int i = 0; i < w.size(); i++)
     {
@@ -14,7 +14,7 @@ network::~network()
         delete b[i];
     }
 }
-void network::add_layer(int size)
+void Network::add_layer(int size)
 {
     shape.push_back(size);
     deep = shape.size();
