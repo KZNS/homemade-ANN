@@ -19,7 +19,8 @@ public:
     ~Matrix();
     bool same_shape(const Matrix &a) const;
     bool same_cnr(const Matrix &a) const;
-    void copy(const Matrix &a);
+    Matrix &copy(const Matrix &a);
+    Matrix &cut(Matrix &a);
     Matrix operator+(const Matrix &a) const;
     Matrix operator*(const Matrix &a) const;
     Matrix &operator+=(const Matrix &a);

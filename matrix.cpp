@@ -48,7 +48,7 @@ bool Matrix::same_cnr(const Matrix &a) const
         return true;
     return false;
 }
-void Matrix::copy(const Matrix &a)
+Matrix &Matrix::copy(const Matrix &a)
 {
     if (!same_shape(a))
     {
@@ -58,6 +58,20 @@ void Matrix::copy(const Matrix &a)
         get_mem();
     }
     memcpy(data[0], a.data[0], sizeof(double)*row*col);
+    return *this;
+}
+Matrix &Matrix::cut(Matrix &a)
+{
+    if (this == &a)
+        return *this;
+    rm_mem();
+    row = a.row;
+    col = a.col;
+    data = a.data;
+    a.row = 0;
+    a.col = 0;
+    a.data = NULL;
+    return *this;
 }
 Matrix Matrix::operator+(const Matrix &a) const
 {
@@ -123,10 +137,7 @@ Matrix &Matrix::operator*=(const Matrix &a)
         }
     }
     rm_mem();
-    row = b.row;
-    col = b.col;
-    data = b.data;
-    b.data = NULL;
+    cut(b);
     return *this;
 }
 Matrix &Matrix::operator=(const Matrix &a)
