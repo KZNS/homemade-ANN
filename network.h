@@ -4,13 +4,13 @@
 #include <vector>
 #include "matrix.h"
 
-class network
+class Network
 {
 private:
     std::vector<Matrix*> w, b;
 
 public:
-    ~network();
+    ~Network();
     std::vector<int> shape;
     int deep;
     void add_layer(int size);
