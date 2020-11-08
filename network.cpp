@@ -3,7 +3,7 @@
 
 #include "network.h"
 
-Network::~network()
+Network::~Network()
 {
     for (int i = 0; i < w.size(); i++)
     {
