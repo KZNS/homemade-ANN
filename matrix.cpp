@@ -4,6 +4,8 @@
 #include "matrix.h"
 #include <cstdio>
 #include <cstring>
+#include <ctime>
+#include <random>
 
 Matrix::Matrix() : row(0), col(0), data(NULL) {}
 Matrix::Matrix(int n, int m) : row(n), col(m)
@@ -186,6 +188,20 @@ std::ostream &operator<<(std::ostream &out, const Matrix &m)
         out << std::endl;
     }
     return out;
+}
+int Matrix::random()
+{
+    std::default_random_engine e;
+    std::uniform_real_distribution<double> u(0.0, 1.0);
+    e.seed(std::time(0));
+    for (int i = 0; i < row; i++)
+    {
+        for (int j = 0; j < col; j++)
+        {
+            data[i][j] = u(e);
+        }
+    }
+    return 0;
 }
 
 #endif
