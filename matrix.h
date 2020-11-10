@@ -17,6 +17,7 @@ public:
     Matrix(int n, int m);
     Matrix(const Matrix &a);
     ~Matrix();
+    int set_shape(int n, int m);
     bool same_shape(const Matrix &a) const;
     bool same_cnr(const Matrix &a) const;
     Matrix &copy(const Matrix &a);

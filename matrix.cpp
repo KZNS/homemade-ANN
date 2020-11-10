@@ -20,6 +20,13 @@ Matrix::~Matrix()
 {
     rm_mem();
 }
+int Matrix::set_shape(int n, int m)
+{
+    rm_mem();
+    row = n;
+    col = m;
+    get_mem();
+}
 void Matrix::get_mem()
 {
     data = new double *[row];
