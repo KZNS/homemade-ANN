@@ -71,7 +71,7 @@ int Dataset::readin_labels(const std::string &file_name)
         data.set_shape(row, col);
         u = read_char(fin);
         data.zero();
-        data.data[u][1] = 1.0;
+        data.data[u][0] = 1.0;
     }
     return 0;
 }
