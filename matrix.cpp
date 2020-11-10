@@ -20,6 +20,14 @@ Matrix::~Matrix()
 {
     rm_mem();
 }
+int Matrix::set_shape(int n, int m)
+{
+    rm_mem();
+    row = n;
+    col = m;
+    get_mem();
+    return 0;
+}
 void Matrix::get_mem()
 {
     data = new double *[row];
@@ -59,7 +67,7 @@ Matrix &Matrix::copy(const Matrix &a)
         col = a.col;
         get_mem();
     }
-    memcpy(data[0], a.data[0], sizeof(double)*row*col);
+    memcpy(data[0], a.data[0], sizeof(double) * row * col);
     return *this;
 }
 Matrix &Matrix::cut(Matrix &a)
@@ -73,6 +81,11 @@ Matrix &Matrix::cut(Matrix &a)
     a.row = 0;
     a.col = 0;
     a.data = NULL;
+    return *this;
+}
+Matrix &Matrix::zero()
+{
+    memset(data[0], 0, sizeof(double) * row * col);
     return *this;
 }
 Matrix Matrix::operator+(const Matrix &a) const
@@ -200,6 +213,18 @@ int Matrix::random()
         {
             data[i][j] = u(e);
         }
+    }
+    return 0;
+}
+int Matrix::print_bool(std::ostream &out) const
+{
+    for (int i = 0; i < row; i++)
+    {
+        for (int j = 0; j < col; j++)
+        {
+            out << (data[i][j] != 0) << " ";
+        }
+        out << std::endl;
     }
     return 0;
 }
