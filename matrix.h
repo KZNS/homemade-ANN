@@ -21,6 +21,7 @@ public:
     bool same_cnr(const Matrix &a) const;
     Matrix &copy(const Matrix &a);
     Matrix &cut(Matrix &a);
+    Matrix &zero();
     Matrix operator+(const Matrix &a) const;
     Matrix operator*(const Matrix &a) const;
     Matrix &operator+=(const Matrix &a);

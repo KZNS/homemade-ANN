@@ -59,7 +59,7 @@ Matrix &Matrix::copy(const Matrix &a)
         col = a.col;
         get_mem();
     }
-    memcpy(data[0], a.data[0], sizeof(double)*row*col);
+    memcpy(data[0], a.data[0], sizeof(double) * row * col);
     return *this;
 }
 Matrix &Matrix::cut(Matrix &a)
@@ -73,6 +73,11 @@ Matrix &Matrix::cut(Matrix &a)
     a.row = 0;
     a.col = 0;
     a.data = NULL;
+    return *this;
+}
+Matrix &Matrix::zero()
+{
+    memset(data[0], 0, sizeof(double) * row * col);
     return *this;
 }
 Matrix Matrix::operator+(const Matrix &a) const
