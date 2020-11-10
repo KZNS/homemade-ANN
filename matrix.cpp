@@ -26,6 +26,7 @@ int Matrix::set_shape(int n, int m)
     row = n;
     col = m;
     get_mem();
+    return 0;
 }
 void Matrix::get_mem()
 {
