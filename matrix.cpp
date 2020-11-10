@@ -216,5 +216,17 @@ int Matrix::random()
     }
     return 0;
 }
+int Matrix::print_bool(std::ostream &out) const
+{
+    for (int i = 0; i < row; i++)
+    {
+        for (int j = 0; j < col; j++)
+        {
+            out << (data[i][j] != 0) << " ";
+        }
+        out << std::endl;
+    }
+    return 0;
+}
 
 #endif

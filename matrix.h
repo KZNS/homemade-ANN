@@ -32,6 +32,7 @@ public:
     friend std::istream &operator>>(std::istream &in, Matrix &m);
     friend std::ostream &operator<<(std::ostream &out, const Matrix &m);
     int random();
+    int print_bool(std::ostream &out) const;
 };
 #include "matrix.cpp"
 #endif
