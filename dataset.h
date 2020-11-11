@@ -15,6 +15,7 @@ public:
     std::vector<Matrix> datas;
     int readin_images(const std::string &file_name);
     int readin_labels(const std::string &file_name);
+    int reshape(int n, int m);
 };
 
 #include "dataset.cpp"

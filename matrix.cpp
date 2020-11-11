@@ -216,6 +216,38 @@ int Matrix::random()
     }
     return 0;
 }
+int Matrix::reshape(int n, int m)
+{
+    if (data == NULL)
+    {
+        return -2;
+    }
+    if (!((n == -1 && row * col % m == 0) ||
+          (m == -1 && row * col % n == 0) ||
+          n * m == row * col))
+    {
+        return -1;
+    }
+    if (n == -1)
+    {
+        n = row * col / m;
+    }
+    if (m == -1)
+    {
+        m = row * col / n;
+    }
+    double *tmp = data[0];
+    delete[] data;
+    row = n;
+    col = m;
+    data = new double *[n];
+    data[0] = tmp;
+    for (int i = 1; i < n; i++)
+    {
+        data[i] = data[i - 1] + col;
+    }
+    return 0;
+}
 int Matrix::print_bool(std::ostream &out) const
 {
     for (int i = 0; i < row; i++)

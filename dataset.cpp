@@ -75,5 +75,32 @@ int Dataset::readin_labels(const std::string &file_name)
     }
     return 0;
 }
+int Dataset::reshape(int n, int m)
+{
+    if (!((n == -1 && row * col % m == 0) ||
+          (m == -1 && row * col % n == 0) ||
+          n * m == row * col))
+    {
+        return -1;
+    }
+    if (n == -1)
+    {
+        n = row * col / m;
+    }
+    if (m == -1)
+    {
+        m = row * col / n;
+    }
+    row = n;
+    col = m;
+    for (int i = 0; i < datas.size(); i++)
+    {
+        if (datas[i].reshape(row, col))
+        {
+            return -1;
+        }
+    }
+    return 0;
+}
 
 #endif

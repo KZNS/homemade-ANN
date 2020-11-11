@@ -16,6 +16,11 @@ int main()
     y_test.readin_labels("data/t10k-labels-idx1-ubyte");
     cout << y_test.datas[0];
 
+    x_train.reshape(-1, 1);
+    x_test.reshape(-1, 1);
+    printf("%d %d\n", x_train.datas[0].row, x_train.datas[0].col);
+    printf("%d %d\n", x_test.datas[0].row, x_test.datas[0].col);
+
     //init network
     Network net;
     net.set_input_shape(28 * 28);
