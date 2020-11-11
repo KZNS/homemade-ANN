@@ -31,6 +31,9 @@ int main()
         cout << net.shape[i] << endl;
     }
     //fit
+    net.fit(x_train, y_train, 5);
     //test
+    double test_loss, test_acc;
+    net.evaluate(x_test, y_test, test_loss, test_acc);
     return 0;
 }
