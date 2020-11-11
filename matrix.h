@@ -24,8 +24,10 @@ public:
     Matrix &cut(Matrix &a);
     Matrix &zero();
     Matrix operator+(const Matrix &a) const;
+    Matrix operator-(const Matrix &a) const;
     Matrix operator*(const Matrix &a) const;
     Matrix &operator+=(const Matrix &a);
+    Matrix &operator-=(const Matrix &a);
     Matrix &operator*=(const Matrix &a);
     Matrix &operator=(const Matrix &a);
     double operator()(int i, int j) const;

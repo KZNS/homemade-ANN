@@ -98,6 +98,16 @@ Matrix Matrix::operator+(const Matrix &a) const
     b += a;
     return b;
 }
+Matrix Matrix::operator-(const Matrix &a) const
+{
+    if (!same_shape(a))
+    {
+        return *this;
+    }
+    Matrix b(*this);
+    b -= a;
+    return b;
+}
 Matrix Matrix::operator*(const Matrix &a) const
 {
     if (!same_cnr(a))
@@ -130,6 +140,21 @@ Matrix &Matrix::operator+=(const Matrix &a)
         for (int j = 0; j < col; j++)
         {
             data[i][j] += a.data[i][j];
+        }
+    }
+    return *this;
+}
+Matrix &Matrix::operator-=(const Matrix &a)
+{
+    if (!same_shape(a))
+    {
+        return *this;
+    }
+    for (int i = 0; i < row; i++)
+    {
+        for (int j = 0; j < col; j++)
+        {
+            data[i][j] -= a.data[i][j];
         }
     }
     return *this;
