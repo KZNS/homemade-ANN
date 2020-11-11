@@ -7,13 +7,15 @@
 class Network
 {
 private:
-    std::vector<Matrix*> w, b;
+    std::vector<Matrix> w, b;
 
 public:
-    ~Network();
+    Network();
+    int input_shape;
     std::vector<int> shape;
     int deep;
-    void add_layer(int size);
+    int set_input_shape(int size);
+    int add_layer(int size);
 };
 
 #include "network.cpp"

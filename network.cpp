@@ -3,29 +3,37 @@
 
 #include "network.h"
 
-Network::~Network()
+Network::Network()
 {
-    for (int i = 0; i < w.size(); i++)
-    {
-        delete w[i];
-    }
-    for (int i = 0; i < b.size(); i++)
-    {
-        delete b[i];
-    }
+    input_shape = 0;
+    deep = 0;
 }
-void Network::add_layer(int size)
+int Network::set_input_shape(int size)
+{
+    input_shape = size;
+    if (deep)
+    {
+        w[0].set_shape(shape[0], input_shape);
+        w[0].random();
+    }
+    return 0;
+}
+int Network::add_layer(int size)
 {
     shape.push_back(size);
     deep = shape.size();
-    if (deep >= 2)
+    if (deep == 1)
     {
-        w.push_back(new Matrix(shape[deep-2], shape[deep-1]));
-        w[w.size()-1]->random();
-        b.push_back(new Matrix(shape[deep-1], 1));
-        b[b.size()-1]->random();
+        w.push_back(Matrix(shape[deep - 1], input_shape));
     }
+    else
+    {
+        w.push_back(Matrix(shape[deep - 1], shape[deep - 2]));
+    }
+    w[deep - 1].random();
+    b.push_back(Matrix(shape[deep - 1], 1));
+    b[deep - 1].random();
+    return 0;
 }
-
 
 #endif

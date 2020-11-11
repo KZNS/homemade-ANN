@@ -18,9 +18,13 @@ int main()
 
     //init network
     Network net;
-    net.add_layer(28 * 28);
+    net.set_input_shape(28 * 28);
     net.add_layer(128);
     net.add_layer(10);
+    for (int i = 0; i < net.shape.size(); i++)
+    {
+        cout << net.shape[i] << endl;
+    }
     //fit
     //test
     return 0;
