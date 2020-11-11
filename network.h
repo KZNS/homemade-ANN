@@ -9,8 +9,10 @@ class Network
 {
 private:
     std::vector<Matrix> w, b;
+    std::vector<Matrix> z, a, delta;
     int random_list(std::vector<int> &ls, int n);
-    int fix(const Matrix &x, const Matrix &y);
+    int fit(const Dataset &x, const Dataset &y);
+    int fit(const Matrix &x, const Matrix &y);
 
 public:
     Network();
@@ -19,7 +21,7 @@ public:
     int deep;
     int set_input_shape(int size);
     int add_layer(int size);
-    int fit(const Dataset &x, const Dataset &y);
+    int init();
     int fit(const Dataset &x, const Dataset &y, int epochs);
     int evaluate(const Dataset &x, const Dataset &y, double &test_loss, double &test_acc);
 };
