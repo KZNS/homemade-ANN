@@ -227,6 +227,27 @@ std::ostream &operator<<(std::ostream &out, const Matrix &m)
     }
     return out;
 }
+Matrix Matrix::hadamard(const Matrix &a)
+{
+    if (!same_shape(a))
+        return *this;
+    Matrix b(*this);
+    b.hadamard_in(a);
+    return b;
+}
+Matrix &Matrix::hadamard_in(const Matrix &a)
+{
+    if (!same_shape(a))
+        return *this;
+    for (int i = 0; i < row; i++)
+    {
+        for (int j = 0; j < col; j++)
+        {
+            data[i][j] *= a.data[i][j];
+        }
+    }
+    return *this;
+}
 int Matrix::random()
 {
     std::default_random_engine e;
