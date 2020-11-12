@@ -30,6 +30,7 @@ int main()
     {
         cout << net.shape[i] << endl;
     }
+    net.init();
     //fit
     net.fit(x_train, y_train, 5);
     //test

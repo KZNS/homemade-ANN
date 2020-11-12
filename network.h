@@ -10,6 +10,8 @@ class Network
 private:
     std::vector<Matrix> w, b;
     std::vector<Matrix> z, a, delta;
+    int inited;
+
     int random_list(std::vector<int> &ls, int n);
     int fit(const Dataset &x, const Dataset &y);
     int fit(const Matrix &x, const Matrix &y, double &loss, int &acn);

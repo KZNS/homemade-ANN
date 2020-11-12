@@ -118,6 +118,7 @@ Network::Network()
 {
     input_shape = 0;
     deep = 0;
+    inited = 0;
 }
 int Network::set_input_shape(int size)
 {
@@ -151,6 +152,7 @@ int Network::init()
     z.resize(deep);
     a.resize(deep);
     delta.resize(deep);
+    inited = 1;
     return 0;
 }
 int Network::fit(const Dataset &x, const Dataset &y)
@@ -175,6 +177,10 @@ int Network::fit(const Dataset &x, const Dataset &y)
 }
 int Network::fit(const Dataset &x, const Dataset &y, int epochs)
 {
+    if (inited != 1)
+    {
+        return -1;
+    }
     for (int i = 1; i <= epochs; i++)
     {
         std::cout << "epoch " << i << std::endl;
