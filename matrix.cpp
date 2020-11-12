@@ -14,7 +14,7 @@ Matrix::Matrix(int n, int m) : row(n), col(m)
 }
 Matrix::Matrix(const Matrix &a) : Matrix(a.row, a.col)
 {
-    memcpy(a.data[0], data[0], sizeof(double) * row * col);
+    memcpy(data[0], a.data[0], sizeof(double) * row * col);
 }
 Matrix::~Matrix()
 {
@@ -262,9 +262,8 @@ Matrix Matrix::T()
 }
 int Matrix::random()
 {
-    std::default_random_engine e;
+    static std::default_random_engine e(std::time(0));
     std::normal_distribution<double> u(0.0, 1.0);
-    e.seed(std::time(0));
     for (int i = 0; i < row; i++)
     {
         for (int j = 0; j < col; j++)
