@@ -21,28 +21,28 @@ int Network::random_list(std::vector<int> &ls, int n)
 }
 int Network::fit(const Matrix &x, const Matrix &y, double &loss, int &acn)
 {
-    z[0] = w[0] * x + b[0];
-    a[0] = activation(z[0]);
+    *z[0] = *w[0] * x + *b[0];
+    *a[0] = activation(*z[0]);
     for (int i = 1; i < deep; i++)
     {
-        z[i] = w[i] * a[i - 1] + b[i];
-        a[i] = activation(z[i]);
+        *z[i] = *w[i] * *a[i - 1] + *b[i];
+        *a[i] = activation(*z[i]);
     }
-    loss = get_loss(a[deep - 1], y);
-    acn = get_acn(a[deep - 1], y);
-    delta[deep - 1] = (a[deep - 1] - y).hadamard(d_activation(z[deep - 1]));
+    loss = get_loss(*a[deep - 1], y);
+    acn = get_acn(*a[deep - 1], y);
+    *delta[deep - 1] = (*a[deep - 1] - y).hadamard(d_activation(*z[deep - 1]));
     for (int i = deep - 2; i >= 0; i--)
     {
-        delta[i] = (w[i + 1].T() * delta[i + 1]).hadamard(d_activation(z[i]));
+        *delta[i] = (w[i + 1]->T() * (*delta[i + 1])).hadamard(d_activation(*z[i]));
     }
     for (int i = 0; i < deep; i++)
     {
-        b[i] -= delta[i]; //可以乘学习率
+        *b[i] -= *delta[i]; //可以乘学习率
     }
-    w[0] -= x * delta[0];
+    *w[0] -= x * (*delta[0]);
     for (int i = 1; i < deep; i++)
     {
-        w[1] -= a[i - 1] * delta[i];
+        *w[1] -= *a[i - 1] * *delta[i];
     }
     return 0;
 }
@@ -125,8 +125,8 @@ int Network::set_input_shape(int size)
     input_shape = size;
     if (deep)
     {
-        w[0].set_shape(shape[0], input_shape);
-        w[0].random();
+        w[0]->set_shape(shape[0], input_shape);
+        w[0]->random();
     }
     return 0;
 }
@@ -136,15 +136,15 @@ int Network::add_layer(int size)
     deep = shape.size();
     if (deep == 1)
     {
-        w.push_back(Matrix(shape[deep - 1], input_shape));
+        w.push_back(new Matrix(shape[deep - 1], input_shape));
     }
     else
     {
-        w.push_back(Matrix(shape[deep - 1], shape[deep - 2]));
+        w.push_back(new Matrix(shape[deep - 1], shape[deep - 2]));
     }
-    w[deep - 1].random();
-    b.push_back(Matrix(shape[deep - 1], 1));
-    b[deep - 1].random();
+    w[deep - 1]->random();
+    b.push_back(new Matrix(shape[deep - 1], 1));
+    b[deep - 1]->random();
     return 0;
 }
 int Network::init()

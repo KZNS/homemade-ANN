@@ -8,8 +8,8 @@
 class Network
 {
 private:
-    std::vector<Matrix> w, b;
-    std::vector<Matrix> z, a, delta;
+    std::vector<Matrix *> w, b;
+    std::vector<Matrix *> z, a, delta;
     int inited;
 
     int random_list(std::vector<int> &ls, int n);
