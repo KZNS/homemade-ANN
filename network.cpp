@@ -55,14 +55,15 @@ int Network::fit(const Matrix &x, const Matrix &y, double &loss, int &acn)
     {
         *delta[i] = (w[i + 1]->T() * (*delta[i + 1])).hadamard(d_activation(*z[i]));
     }
+    double lam = 0.1;
     for (int i = 0; i < deep; i++)
     {
-        *b[i] -= *delta[i]; //可以乘学习率
+        *b[i] -= *delta[i] * lam;
     }
-    *w[0] -= x * (*delta[0]);
+    *w[0] -= *delta[0] * x.T() * lam;
     for (int i = 1; i < deep; i++)
     {
-        *w[1] -= *a[i - 1] * *delta[i];
+        *w[1] -= *delta[i] * a[i-1]->T() * lam;
     }
     return 0;
 }

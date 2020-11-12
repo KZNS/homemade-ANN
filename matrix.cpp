@@ -129,6 +129,18 @@ Matrix Matrix::operator*(const Matrix &a) const
     }
     return b;
 }
+Matrix Matrix::operator*(const double a) const
+{
+    Matrix b(*this);
+    for (int i = 0; i < row; i++)
+    {
+        for (int j = 0; j < col; j++)
+        {
+            b.data[i][j] *= a;
+        }
+    }
+    return b;
+}
 Matrix &Matrix::operator+=(const Matrix &a)
 {
     if (!same_shape(a))
@@ -248,7 +260,7 @@ Matrix &Matrix::hadamard_in(const Matrix &a)
     }
     return *this;
 }
-Matrix Matrix::T()
+Matrix Matrix::T() const
 {
     Matrix a(col, row);
     for (int i = 0; i < row; i++)
