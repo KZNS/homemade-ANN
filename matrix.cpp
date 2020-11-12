@@ -248,6 +248,18 @@ Matrix &Matrix::hadamard_in(const Matrix &a)
     }
     return *this;
 }
+Matrix Matrix::T()
+{
+    Matrix a(col, row);
+    for (int i = 0; i < row; i++)
+    {
+        for (int j = 0; j < col; j++)
+        {
+            a.data[j][i] = data[i][j];
+        }
+    }
+    return a;
+}
 int Matrix::random()
 {
     std::default_random_engine e;

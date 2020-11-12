@@ -35,6 +35,7 @@ public:
     friend std::ostream &operator<<(std::ostream &out, const Matrix &m);
     Matrix hadamard(const Matrix &a);
     Matrix &hadamard_in(const Matrix &a);
+    Matrix T();
     int random();
     int reshape(int n, int m);
     int print_bool(std::ostream &out) const;
