@@ -44,6 +44,30 @@ int Network::fit(const Matrix &x, const Matrix &y)
     }
     return 0;
 }
+Matrix Network::activation(const Matrix &a)
+{
+    Matrix b(a.row, a.col);
+    for (int i = 0; i < a.row; i++)
+    {
+        for (int j = 0; j < a.col; j++)
+        {
+            b.data[i][j] = a.data[i][j] < 0 ? 0 : a.data[i][j];
+        }
+    }
+    return b;
+}
+Matrix Network::d_activation(const Matrix &a)
+{
+    Matrix b(a.row, a.col);
+    for (int i = 0; i < a.row; i++)
+    {
+        for (int j = 0; j < a.col; j++)
+        {
+            b.data[i][j] = a.data[i][j] < 0 ? 0 : 1;
+        }
+    }
+    return b;
+}
 Network::Network()
 {
     input_shape = 0;

@@ -13,6 +13,8 @@ private:
     int random_list(std::vector<int> &ls, int n);
     int fit(const Dataset &x, const Dataset &y);
     int fit(const Matrix &x, const Matrix &y);
+    Matrix activation(const Matrix &a);
+    Matrix d_activation(const Matrix &a);
 
 public:
     Network();
