@@ -92,6 +92,7 @@ Matrix Matrix::operator+(const Matrix &a) const
 {
     if (!same_shape(a))
     {
+        std::cout << "wrong shape!" << std::endl;
         return *this;
     }
     Matrix b(*this);
@@ -102,6 +103,7 @@ Matrix Matrix::operator-(const Matrix &a) const
 {
     if (!same_shape(a))
     {
+        std::cout << "wrong shape!" << std::endl;
         return *this;
     }
     Matrix b(*this);
@@ -112,6 +114,7 @@ Matrix Matrix::operator*(const Matrix &a) const
 {
     if (!same_cnr(a))
     {
+        std::cout << "wrong shape!" << std::endl;
         return *this;
     }
     Matrix b(row, a.col);
@@ -145,6 +148,7 @@ Matrix &Matrix::operator+=(const Matrix &a)
 {
     if (!same_shape(a))
     {
+        std::cout << "wrong shape!" << std::endl;
         return *this;
     }
     for (int i = 0; i < row; i++)
@@ -160,6 +164,7 @@ Matrix &Matrix::operator-=(const Matrix &a)
 {
     if (!same_shape(a))
     {
+        std::cout << "wrong shape!" << std::endl;
         return *this;
     }
     for (int i = 0; i < row; i++)
@@ -174,7 +179,10 @@ Matrix &Matrix::operator-=(const Matrix &a)
 Matrix &Matrix::operator*=(const Matrix &a)
 {
     if (!same_cnr(a))
+    {
+        std::cout << "wrong shape!" << std::endl;
         return *this;
+    }
     Matrix b(row, a.col);
 
     for (int i = 0; i < row; i++)
@@ -242,7 +250,10 @@ std::ostream &operator<<(std::ostream &out, const Matrix &m)
 Matrix Matrix::hadamard(const Matrix &a)
 {
     if (!same_shape(a))
+    {
+        std::cout << "wrong shape!" << std::endl;
         return *this;
+    }
     Matrix b(*this);
     b.hadamard_in(a);
     return b;
@@ -250,7 +261,10 @@ Matrix Matrix::hadamard(const Matrix &a)
 Matrix &Matrix::hadamard_in(const Matrix &a)
 {
     if (!same_shape(a))
+    {
+        std::cout << "wrong shape!" << std::endl;
         return *this;
+    }
     for (int i = 0; i < row; i++)
     {
         for (int j = 0; j < col; j++)
