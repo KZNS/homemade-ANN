@@ -11,7 +11,7 @@ int Network::random_list(std::vector<int> &ls, int n)
     {
         ls[i] = i;
     }
-    std::default_random_engine e(std::time(0));
+    static std::default_random_engine e(std::time(0));
     for (int i = n - 1; i > 0; i--)
     {
         std::uniform_int_distribution<int> u(0, i);
