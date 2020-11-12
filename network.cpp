@@ -106,8 +106,7 @@ double Network::get_loss(const Matrix &a, const Matrix &y)
             loss1 += c.data[i][j];
         }
         loss1 /= 2;
-        if (loss)
-            loss += loss1;
+        loss += loss1;
     }
     loss /= c.col;
     return loss;
@@ -119,7 +118,7 @@ int Network::get_acn(const Matrix &a, const Matrix &y)
     for (int j = 0; j < a.col; j++)
     {
         f = true;
-        for (int i = 0; j < a.row; j++)
+        for (int i = 0; i < a.row; i++)
         {
             if ((a.data[i][j] < 0.5 ? 0 : 1) != y.data[i][j])
             {
