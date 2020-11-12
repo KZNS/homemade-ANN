@@ -21,10 +21,11 @@ private:
     int get_acn(const Matrix &a, const Matrix &y);
 
 public:
-    Network();
     int input_shape;
     std::vector<int> shape;
     int deep;
+
+    Network();
     int set_input_shape(int size);
     int add_layer(int size);
     int init();

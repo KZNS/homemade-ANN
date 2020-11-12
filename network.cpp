@@ -19,6 +19,26 @@ int Network::random_list(std::vector<int> &ls, int n)
     }
     return 0;
 }
+int Network::fit(const Dataset &x, const Dataset &y)
+{
+    std::vector<int> ls;
+    random_list(ls, x.size);
+    double acn = 0;
+    double acc = 0, loss = 0;
+    double loss_one;
+    int acn_one;
+    for (int i = 0; i < x.size; i++)
+    {
+        printf("\r%d/%d: loss: %.3lf acc: %.3lf",
+               i + 1, x.size, loss, acc);
+        fit(x.datas[ls[i]], y.datas[ls[i]], loss_one, acn_one);
+        loss = (loss * i + loss_one) / (i + 1);
+        acn += acn_one;
+        acc = acn / (i + 1);
+    }
+    printf("\r%d/%d: loss: %.3lf acc: %.3lf\n", x.size, x.size, loss, acc);
+    return 0;
+}
 int Network::fit(const Matrix &x, const Matrix &y, double &loss, int &acn)
 {
     *z[0] = *w[0] * x + *b[0];
@@ -114,6 +134,7 @@ int Network::get_acn(const Matrix &a, const Matrix &y)
     }
     return acn;
 }
+
 Network::Network()
 {
     input_shape = 0;
@@ -156,26 +177,6 @@ int Network::init()
         delta.push_back(new Matrix);
     }
     inited = 1;
-    return 0;
-}
-int Network::fit(const Dataset &x, const Dataset &y)
-{
-    std::vector<int> ls;
-    random_list(ls, x.size);
-    double acn = 0;
-    double acc = 0, loss = 0;
-    double loss_one;
-    int acn_one;
-    for (int i = 0; i < x.size; i++)
-    {
-        printf("\r%d/%d: loss: %.3lf acc: %.3lf",
-               i + 1, x.size, loss, acc);
-        fit(x.datas[ls[i]], y.datas[ls[i]], loss_one, acn_one);
-        loss = (loss * i + loss_one) / (i + 1);
-        acn += acn_one;
-        acc = acn / (i + 1);
-    }
-    printf("\r%d/%d: loss: %.3lf acc: %.3lf\n", x.size, x.size, loss, acc);
     return 0;
 }
 int Network::fit(const Dataset &x, const Dataset &y, int epochs)
