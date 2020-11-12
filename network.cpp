@@ -149,9 +149,12 @@ int Network::add_layer(int size)
 }
 int Network::init()
 {
-    z.resize(deep);
-    a.resize(deep);
-    delta.resize(deep);
+    for (int i = 0; i < deep; i++)
+    {
+        z.push_back(new Matrix);
+        a.push_back(new Matrix);
+        delta.push_back(new Matrix);
+    }
     inited = 1;
     return 0;
 }
