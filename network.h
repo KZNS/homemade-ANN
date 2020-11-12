@@ -30,6 +30,8 @@ public:
     int init();
     int fit(const Dataset &x, const Dataset &y, int epochs);
     int evaluate(const Dataset &x, const Dataset &y, double &test_loss, double &test_acc);
+
+    int print_w(int x);
 };
 
 #include "network.cpp"

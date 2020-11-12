@@ -199,5 +199,14 @@ int Network::evaluate(const Dataset &x, const Dataset &y, double &test_loss, dou
 {
     return 0;
 }
+int Network::print_w(int x)
+{
+    if (x < w.size())
+    {
+        std::cout << *w[x];
+        return 0;
+    }
+    return -1;
+}
 
 #endif
