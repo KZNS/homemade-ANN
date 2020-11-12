@@ -10,6 +10,12 @@ char Dataset::read_char(std::ifstream &fin)
     fin.read(&c, 1);
     return c;
 }
+unsigned char Dataset::read_u_char(std::ifstream &fin)
+{
+    unsigned char c;
+    fin.read((char *)&c, 1);
+    return c;
+}
 int Dataset::read_int(std::ifstream &fin)
 {
     char c[4];
@@ -35,7 +41,7 @@ int Dataset::readin_images(const std::string &file_name)
     col = read_int(fin);
     std::cout << size << " " << row << " " << col << std::endl;
 
-    char u;
+    int u;
     datas.resize(size);
     for (int i = 0; i < size; i++)
     {
@@ -45,7 +51,7 @@ int Dataset::readin_images(const std::string &file_name)
         {
             for (int j = 0; j < col; j++)
             {
-                u = read_char(fin);
+                u = read_u_char(fin);
                 data.data[i][j] = u / 255.0;
             }
         }
@@ -63,13 +69,13 @@ int Dataset::readin_labels(const std::string &file_name)
     col = 1;
     std::cout << size << " " << row << " " << col << std::endl;
 
-    char u;
+    int u;
     datas.resize(size);
     for (int i = 0; i < size; i++)
     {
         Matrix &data = datas[i];
         data.set_shape(row, col);
-        u = read_char(fin);
+        u = read_u_char(fin);
         data.zero();
         data.data[u][0] = 1.0;
     }

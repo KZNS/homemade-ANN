@@ -8,6 +8,7 @@ class Dataset
 {
 private:
     char read_char(std::ifstream &fin);
+    unsigned char read_u_char(std::ifstream &fin);
     int read_int(std::ifstream &fin);
     double read_double(std::ifstream &fin);
 public:
