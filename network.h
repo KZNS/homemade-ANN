@@ -12,9 +12,11 @@ private:
     std::vector<Matrix> z, a, delta;
     int random_list(std::vector<int> &ls, int n);
     int fit(const Dataset &x, const Dataset &y);
-    int fit(const Matrix &x, const Matrix &y);
+    int fit(const Matrix &x, const Matrix &y, double &loss, int &acn);
     Matrix activation(const Matrix &a);
     Matrix d_activation(const Matrix &a);
+    double get_loss(const Matrix &a, const Matrix &y);
+    int get_acn(const Matrix &a, const Matrix &y);
 
 public:
     Network();
