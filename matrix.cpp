@@ -263,7 +263,7 @@ Matrix Matrix::T()
 int Matrix::random()
 {
     std::default_random_engine e;
-    std::uniform_real_distribution<double> u(0.0, 1.0);
+    std::normal_distribution<double> u(0.0, 1.0);
     e.seed(std::time(0));
     for (int i = 0; i < row; i++)
     {
