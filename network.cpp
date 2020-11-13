@@ -63,14 +63,15 @@ int Network::fit(const Matrix &x, const Matrix &y, double &loss, int &acn)
         *z[i] = (*w[i] * *a[i - 1]).adds(*b[i]);
         *a[i] = activation(*z[i]);
     }
+    *a[deep-1] = *z[deep-1];
     loss = get_loss(*a[deep - 1], y);
     acn = get_acn(*a[deep - 1], y);
-    *delta[deep - 1] = (*a[deep - 1] - y).hadamard(d_activation(*z[deep - 1]));
+    *delta[deep - 1] = *a[deep - 1] - y;
     for (int i = deep - 2; i >= 0; i--)
     {
         *delta[i] = (w[i + 1]->T() * (*delta[i + 1])).hadamard(d_activation(*z[i]));
     }
-    double lam = 0.1;
+    double lam = 0.01;
     for (int i = 0; i < deep; i++)
     {
         *b[i] -= delta[i]->sum_by_col() * (1.0 / x.col) * lam;
