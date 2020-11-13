@@ -13,7 +13,7 @@ private:
     int inited;
 
     int random_list(std::vector<int> &ls, int n);
-    int fit(const Dataset &x, const Dataset &y);
+    int fit(const Dataset &x, const Dataset &y, int mini_batch);
     int fit(const Matrix &x, const Matrix &y, double &loss, int &acn);
     Matrix activation(const Matrix &a);
     Matrix d_activation(const Matrix &a);
@@ -29,7 +29,7 @@ public:
     int set_input_shape(int size);
     int add_layer(int size);
     int init();
-    int fit(const Dataset &x, const Dataset &y, int epochs);
+    int fit(const Dataset &x, const Dataset &y, int mini_batch, int epochs);
     int evaluate(const Dataset &x, const Dataset &y, double &test_loss, double &test_acc);
 
     int print_w(int x);

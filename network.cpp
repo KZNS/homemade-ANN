@@ -19,33 +19,50 @@ int Network::random_list(std::vector<int> &ls, int n)
     }
     return 0;
 }
-int Network::fit(const Dataset &x, const Dataset &y)
+int Network::fit(const Dataset &x, const Dataset &y, int mini_batch)
 {
     std::vector<int> ls;
     random_list(ls, x.size);
+    int batch_n = x.size / mini_batch;
+
     double acn = 0;
     double acc = 0, loss = 0;
     double loss_one;
     int acn_one;
-    for (int i = 0; i < x.size; i++)
+
+    Matrix x_batch(x.row, mini_batch);
+    Matrix y_batch(y.row, mini_batch);
+    int id;
+    for (int i = 0; i < batch_n; i++)
     {
-        printf("\r%d/%d: loss: %.3lf acc: %.3lf",
-               i + 1, x.size, loss, acc);
-        fit(x.datas[ls[i]], y.datas[ls[i]], loss_one, acn_one);
+        printf("\r%d/%d: loss: %.3lf acc: %.3lf", i + 1, batch_n, loss, acc);
+        for (int j = 0; j < mini_batch; j++)
+        {
+            id = ls[i * mini_batch + j];
+            for (int k = 0; k < x.row; k++)
+            {
+                x_batch.data[k][j] = x.datas[id].data[k][0];
+            }
+            for (int k = 0; k < y.row; k++)
+            {
+                y_batch.data[k][j] = x.datas[id].data[k][0];
+            }
+        }
+        fit(x_batch, y_batch, loss_one, acn_one);
         loss = (loss * i + loss_one) / (i + 1);
         acn += acn_one;
         acc = acn / (i + 1);
     }
-    printf("\r%d/%d: loss: %.3lf acc: %.3lf\n", x.size, x.size, loss, acc);
+    printf("\r%d/%d: loss: %.3lf acc: %.3lf\n", batch_n, batch_n, loss, acc);
     return 0;
 }
 int Network::fit(const Matrix &x, const Matrix &y, double &loss, int &acn)
 {
-    *z[0] = *w[0] * x + *b[0];
+    *z[0] = (*w[0] * x).adds(*b[0]);
     *a[0] = activation(*z[0]);
     for (int i = 1; i < deep; i++)
     {
-        *z[i] = *w[i] * *a[i - 1] + *b[i];
+        *z[i] = (*w[i] * *a[i - 1]).adds(*b[i]);
         *a[i] = activation(*z[i]);
     }
     loss = get_loss(*a[deep - 1], y);
@@ -58,12 +75,12 @@ int Network::fit(const Matrix &x, const Matrix &y, double &loss, int &acn)
     double lam = 0.1;
     for (int i = 0; i < deep; i++)
     {
-        *b[i] -= *delta[i] * lam;
+        *b[i] -= delta[i]->sum_by_col() * (1.0 / x.col) * lam;
     }
-    *w[0] -= *delta[0] * x.T() * lam;
+    *w[0] -= *delta[0] * x.T() * (1.0 / x.col) * lam;
     for (int i = 1; i < deep; i++)
     {
-        *w[1] -= *delta[i] * a[i-1]->T() * lam;
+        *w[i] -= *delta[i] * a[i - 1]->T() * (1.0 / x.col) * lam;
     }
     return 0;
 }
@@ -179,7 +196,7 @@ int Network::init()
     inited = 1;
     return 0;
 }
-int Network::fit(const Dataset &x, const Dataset &y, int epochs)
+int Network::fit(const Dataset &x, const Dataset &y, int mini_batch, int epochs)
 {
     if (inited != 1)
     {
@@ -188,7 +205,7 @@ int Network::fit(const Dataset &x, const Dataset &y, int epochs)
     for (int i = 1; i <= epochs; i++)
     {
         std::cout << "epoch " << i << std::endl;
-        if (fit(x, y))
+        if (fit(x, y, mini_batch))
         {
             std::cout << "error in fit()" << std::endl;
             return -1;

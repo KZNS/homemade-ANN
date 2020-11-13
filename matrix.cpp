@@ -286,6 +286,36 @@ Matrix Matrix::T() const
     }
     return a;
 }
+Matrix Matrix::sum_by_col() const
+{
+    Matrix b(row, 1);
+    b.zero();
+    for (int i = 0; i < row; i++)
+    {
+        for (int j = 0; j < col; j++)
+        {
+            b.data[i][0] += data[i][j];
+        }
+    }
+    return b;
+}
+Matrix Matrix::adds(const Matrix &a) const
+{
+    if (a.col != 1 || row != a.row)
+    {
+        std::cout << "wrong shape!" << std::endl;
+        return *this;
+    }
+    Matrix b(*this);
+    for (int i = 0; i < row; i++)
+    {
+        for (int j = 0; j < col; j++)
+        {
+            b.data[i][j] += a.data[i][0];
+        }
+    }
+    return b;
+}
 int Matrix::random()
 {
     static std::default_random_engine e(std::time(0));
