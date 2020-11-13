@@ -149,6 +149,19 @@ int Network::get_acn(const Matrix &a, const Matrix &y)
     }
     return acn;
 }
+int Network::evaluate(const Matrix &x, const Matrix &y, double &loss, int &acn)
+{
+    *z[0] = (*w[0] * x).adds(*b[0]);
+    *a[0] = activation(*z[0]);
+    for (int i = 1; i < deep; i++)
+    {
+        *z[i] = (*w[i] * *a[i - 1]).adds(*b[i]);
+        *a[i] = activation(*z[i]);
+    }
+    loss = get_loss(*a[deep - 1], y);
+    acn = get_acn(*a[deep - 1], y);
+    return 0;
+}
 
 Network::Network()
 {
@@ -211,8 +224,23 @@ int Network::fit(const Dataset &x, const Dataset &y, int mini_batch, int epochs)
     }
     return 0;
 }
-int Network::evaluate(const Dataset &x, const Dataset &y, double &test_loss, double &test_acc)
+int Network::evaluate(const Dataset &x, const Dataset &y, double &loss, double &acc)
 {
+    int acn = 0, acn_one;
+    double loss_one;
+    loss = 0;
+    acc = 0;
+    for (int i = 0; i < x.size; i++)
+    {
+        printf("\rtesting %d/%d", i+1, x.size);
+        evaluate(x.datas[i], y.datas[i], loss_one, acn_one);
+        acn += acn_one;
+        loss += loss_one;
+    }
+    printf("\n");
+    loss /= x.size;
+    acc = (double)acn / x.size;
+    printf("loss: %.3lf acc: %.3lf\n", loss, acc);
     return 0;
 }
 int Network::print_w(int x)

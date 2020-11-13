@@ -19,6 +19,7 @@ private:
     Matrix d_activation(const Matrix &a);
     double get_loss(const Matrix &a, const Matrix &y);
     int get_acn(const Matrix &a, const Matrix &y);
+    int evaluate(const Matrix &x, const Matrix &y, double &loss, int &acn);
 
 public:
     int input_shape;
@@ -30,7 +31,7 @@ public:
     int add_layer(int size);
     int init();
     int fit(const Dataset &x, const Dataset &y, int mini_batch, int epochs);
-    int evaluate(const Dataset &x, const Dataset &y, double &test_loss, double &test_acc);
+    int evaluate(const Dataset &x, const Dataset &y, double &loss, double &acc);
 
     int print_w(int x);
 };
