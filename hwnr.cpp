@@ -32,7 +32,7 @@ int main()
     }
     net.init();
     //fit
-    net.fit(x_train, y_train, 5);
+    net.fit(x_train, y_train, 32, 5);
     //test
     double test_loss, test_acc;
     net.evaluate(x_test, y_test, test_loss, test_acc);

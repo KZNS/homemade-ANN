@@ -92,7 +92,7 @@ Matrix Matrix::operator+(const Matrix &a) const
 {
     if (!same_shape(a))
     {
-        std::cout << "wrong shape!" << std::endl;
+        std::cout << "wrong shape in +" << std::endl;
         return *this;
     }
     Matrix b(*this);
@@ -103,7 +103,7 @@ Matrix Matrix::operator-(const Matrix &a) const
 {
     if (!same_shape(a))
     {
-        std::cout << "wrong shape!" << std::endl;
+        std::cout << "wrong shape in -" << std::endl;
         return *this;
     }
     Matrix b(*this);
@@ -114,7 +114,7 @@ Matrix Matrix::operator*(const Matrix &a) const
 {
     if (!same_cnr(a))
     {
-        std::cout << "wrong shape!" << std::endl;
+        std::cout << "wrong shape in *" << std::endl;
         return *this;
     }
     Matrix b(row, a.col);
@@ -148,7 +148,7 @@ Matrix &Matrix::operator+=(const Matrix &a)
 {
     if (!same_shape(a))
     {
-        std::cout << "wrong shape!" << std::endl;
+        std::cout << "wrong shape in +=" << std::endl;
         return *this;
     }
     for (int i = 0; i < row; i++)
@@ -164,7 +164,7 @@ Matrix &Matrix::operator-=(const Matrix &a)
 {
     if (!same_shape(a))
     {
-        std::cout << "wrong shape!" << std::endl;
+        std::cout << "wrong shape in -=" << std::endl;
         return *this;
     }
     for (int i = 0; i < row; i++)
@@ -180,7 +180,7 @@ Matrix &Matrix::operator*=(const Matrix &a)
 {
     if (!same_cnr(a))
     {
-        std::cout << "wrong shape!" << std::endl;
+        std::cout << "wrong shape in *=" << std::endl;
         return *this;
     }
     Matrix b(row, a.col);
@@ -251,7 +251,7 @@ Matrix Matrix::hadamard(const Matrix &a)
 {
     if (!same_shape(a))
     {
-        std::cout << "wrong shape!" << std::endl;
+        std::cout << "wrong shape in hadamard" << std::endl;
         return *this;
     }
     Matrix b(*this);
@@ -262,7 +262,7 @@ Matrix &Matrix::hadamard_in(const Matrix &a)
 {
     if (!same_shape(a))
     {
-        std::cout << "wrong shape!" << std::endl;
+        std::cout << "wrong shape in hadamard_in" << std::endl;
         return *this;
     }
     for (int i = 0; i < row; i++)
@@ -285,6 +285,36 @@ Matrix Matrix::T() const
         }
     }
     return a;
+}
+Matrix Matrix::sum_by_col() const
+{
+    Matrix b(row, 1);
+    b.zero();
+    for (int i = 0; i < row; i++)
+    {
+        for (int j = 0; j < col; j++)
+        {
+            b.data[i][0] += data[i][j];
+        }
+    }
+    return b;
+}
+Matrix Matrix::adds(const Matrix &a) const
+{
+    if (a.col != 1 || row != a.row)
+    {
+        std::cout << "wrong shape!" << std::endl;
+        return *this;
+    }
+    Matrix b(*this);
+    for (int i = 0; i < row; i++)
+    {
+        for (int j = 0; j < col; j++)
+        {
+            b.data[i][j] += a.data[i][0];
+        }
+    }
+    return b;
 }
 int Matrix::random()
 {

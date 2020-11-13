@@ -37,6 +37,8 @@ public:
     Matrix hadamard(const Matrix &a);
     Matrix &hadamard_in(const Matrix &a);
     Matrix T() const;
+    Matrix sum_by_col() const;
+    Matrix adds(const Matrix &a) const;
     int random();
     int reshape(int n, int m);
     int print_bool(std::ostream &out) const;
