@@ -34,7 +34,7 @@ int Network::fit(const Dataset &x, const Dataset &y, int mini_batch)
     int id;
     for (int i = 0; i < batch_n; i++)
     {
-        printf("\r%d/%d: loss: %.3lf acc: %.3lf", i + 1, batch_n, loss, acc);
+        printf("\r%d/%d: loss: %.3lf acc: %.3lf        ", i + 1, batch_n, loss, acc);
         for (int j = 0; j < mini_batch; j++)
         {
             id = ls[i * mini_batch + j];
@@ -51,7 +51,7 @@ int Network::fit(const Dataset &x, const Dataset &y, int mini_batch)
         acn += acn_one;
         acc = acn / ((i + 1) * mini_batch);
     }
-    printf("\r%d/%d: loss: %.3lf acc: %.3lf\n", batch_n, batch_n, loss, acc);
+    printf("\r%d/%d: loss: %.3lf acc: %.3lf        \n", batch_n, batch_n, loss, acc);
     return 0;
 }
 int Network::fit(const Matrix &x, const Matrix &y, double &loss, int &acn)
