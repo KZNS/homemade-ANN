@@ -162,15 +162,9 @@ int Network::get_acn(const Matrix &a, const Matrix &y)
 }
 int Network::evaluate(const Matrix &x, const Matrix &y, double &loss, int &acn)
 {
-    *z[0] = (*w[0] * x).adds(*b[0]);
-    *a[0] = activation(*z[0]);
-    for (int i = 1; i < deep; i++)
-    {
-        *z[i] = (*w[i] * *a[i - 1]).adds(*b[i]);
-        *a[i] = activation(*z[i]);
-    }
-    loss = get_loss(*a[deep - 1], y);
-    acn = get_acn(*a[deep - 1], y);
+    calculate(x, y);
+    loss = get_loss(*z[deep - 1], y);
+    acn = get_acn(*z[deep - 1], y);
     return 0;
 }
 
