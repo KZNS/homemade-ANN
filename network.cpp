@@ -56,17 +56,27 @@ int Network::fit(const Dataset &x, const Dataset &y, int mini_batch)
 }
 int Network::fit(const Matrix &x, const Matrix &y, double &loss, int &acn)
 {
+    calculate(x, y);
+    loss = get_loss(*z[deep - 1], y);
+    acn = get_acn(*z[deep - 1], y);
+    optimize(x, y);
+    return 0;
+}
+int Network::calculate(const Matrix &x, const Matrix &y)
+{
     *z[0] = (*w[0] * x).adds(*b[0]);
     *a[0] = activation(*z[0]);
-    for (int i = 1; i < deep; i++)
+    for (int i = 1; i < deep - 1; i++)
     {
         *z[i] = (*w[i] * *a[i - 1]).adds(*b[i]);
         *a[i] = activation(*z[i]);
     }
-    *a[deep-1] = *z[deep-1];
-    loss = get_loss(*a[deep - 1], y);
-    acn = get_acn(*a[deep - 1], y);
-    *delta[deep - 1] = *a[deep - 1] - y;
+    *z[deep - 1] = (*w[deep - 1] * *a[deep - 2]).adds(*b[deep - 1]);
+    return 0;
+}
+int Network::optimize(const Matrix &x, const Matrix &y)
+{
+    *delta[deep - 1] = *z[deep - 1] - y;
     for (int i = deep - 2; i >= 0; i--)
     {
         *delta[i] = (w[i + 1]->T() * (*delta[i + 1])).hadamard(d_activation(*z[i]));
@@ -233,7 +243,7 @@ int Network::evaluate(const Dataset &x, const Dataset &y, double &loss, double &
     acc = 0;
     for (int i = 0; i < x.size; i++)
     {
-        printf("\rtesting %d/%d", i+1, x.size);
+        printf("\rtesting %d/%d", i + 1, x.size);
         evaluate(x.datas[i], y.datas[i], loss_one, acn_one);
         acn += acn_one;
         loss += loss_one;

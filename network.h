@@ -15,6 +15,8 @@ private:
     int random_list(std::vector<int> &ls, int n);
     int fit(const Dataset &x, const Dataset &y, int mini_batch);
     int fit(const Matrix &x, const Matrix &y, double &loss, int &acn);
+    int calculate(const Matrix &x, const Matrix &y);
+    int optimize(const Matrix &x, const Matrix &y);
     Matrix activation(const Matrix &a);
     Matrix d_activation(const Matrix &a);
     double get_loss(const Matrix &a, const Matrix &y);
