@@ -81,7 +81,7 @@ int Network::optimize(const Matrix &x, const Matrix &y)
     {
         *delta[i] = (w[i + 1]->T() * (*delta[i + 1])).hadamard(d_activation(*z[i]));
     }
-    double lam = 0.01;
+    double lam = 0.0005;
     for (int i = 0; i < deep; i++)
     {
         *b[i] -= delta[i]->sum_by_col() * (1.0 / x.col) * lam;
@@ -229,6 +229,26 @@ int Network::fit(const Dataset &x, const Dataset &y, int mini_batch, int epochs)
     }
     return 0;
 }
+int Network::fit(const Dataset &x, const Dataset &y, int mini_batch, int epochs,
+                 const Dataset &x_test, const Dataset &y_test)
+{
+    if (inited != 1)
+    {
+        return -1;
+    }
+    double loss, acc;
+    for (int i = 1; i <= epochs; i++)
+    {
+        std::cout << "epoch " << i << std::endl;
+        if (fit(x, y, mini_batch))
+        {
+            std::cout << "error in fit()" << std::endl;
+            return -1;
+        }
+        evaluate(x_test, y_test, loss, acc);
+    }
+    return 0;
+}
 int Network::evaluate(const Dataset &x, const Dataset &y, double &loss, double &acc)
 {
     int acn = 0, acn_one;
@@ -245,6 +265,7 @@ int Network::evaluate(const Dataset &x, const Dataset &y, double &loss, double &
     printf("\n");
     loss /= x.size;
     acc = (double)acn / x.size;
+    printf("acn: %d\n", acn);
     printf("loss: %.3lf acc: %.3lf\n", loss, acc);
     return 0;
 }

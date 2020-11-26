@@ -33,6 +33,8 @@ public:
     int add_layer(int size);
     int init();
     int fit(const Dataset &x, const Dataset &y, int mini_batch, int epochs);
+    int fit(const Dataset &x, const Dataset &y, int mini_batch, int epochs,
+            const Dataset &x_test, const Dataset &y_test);
     int evaluate(const Dataset &x, const Dataset &y, double &loss, double &acc);
 
     int print_w(int x);
