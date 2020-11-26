@@ -8,6 +8,7 @@ class Dataset
 {
 private:
     char read_char(std::ifstream &fin);
+    unsigned char read_u_char(std::ifstream &fin);
     int read_int(std::ifstream &fin);
     double read_double(std::ifstream &fin);
 public:
@@ -15,6 +16,7 @@ public:
     std::vector<Matrix> datas;
     int readin_images(const std::string &file_name);
     int readin_labels(const std::string &file_name);
+    int reshape(int n, int m);
 };
 
 #include "dataset.cpp"

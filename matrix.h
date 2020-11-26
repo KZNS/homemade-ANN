@@ -24,14 +24,23 @@ public:
     Matrix &cut(Matrix &a);
     Matrix &zero();
     Matrix operator+(const Matrix &a) const;
+    Matrix operator-(const Matrix &a) const;
     Matrix operator*(const Matrix &a) const;
+    Matrix operator*(const double a) const;
     Matrix &operator+=(const Matrix &a);
+    Matrix &operator-=(const Matrix &a);
     Matrix &operator*=(const Matrix &a);
     Matrix &operator=(const Matrix &a);
     double operator()(int i, int j) const;
     friend std::istream &operator>>(std::istream &in, Matrix &m);
     friend std::ostream &operator<<(std::ostream &out, const Matrix &m);
+    Matrix hadamard(const Matrix &a);
+    Matrix &hadamard_in(const Matrix &a);
+    Matrix T() const;
+    Matrix sum_by_col() const;
+    Matrix adds(const Matrix &a) const;
     int random();
+    int reshape(int n, int m);
     int print_bool(std::ostream &out) const;
 };
 #include "matrix.cpp"

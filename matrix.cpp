@@ -14,7 +14,7 @@ Matrix::Matrix(int n, int m) : row(n), col(m)
 }
 Matrix::Matrix(const Matrix &a) : Matrix(a.row, a.col)
 {
-    memcpy(a.data[0], data[0], sizeof(double) * row * col);
+    memcpy(data[0], a.data[0], sizeof(double) * row * col);
 }
 Matrix::~Matrix()
 {
@@ -92,16 +92,29 @@ Matrix Matrix::operator+(const Matrix &a) const
 {
     if (!same_shape(a))
     {
+        std::cout << "wrong shape in +" << std::endl;
         return *this;
     }
     Matrix b(*this);
     b += a;
     return b;
 }
+Matrix Matrix::operator-(const Matrix &a) const
+{
+    if (!same_shape(a))
+    {
+        std::cout << "wrong shape in -" << std::endl;
+        return *this;
+    }
+    Matrix b(*this);
+    b -= a;
+    return b;
+}
 Matrix Matrix::operator*(const Matrix &a) const
 {
     if (!same_cnr(a))
     {
+        std::cout << "wrong shape in *" << std::endl;
         return *this;
     }
     Matrix b(row, a.col);
@@ -119,10 +132,23 @@ Matrix Matrix::operator*(const Matrix &a) const
     }
     return b;
 }
+Matrix Matrix::operator*(const double a) const
+{
+    Matrix b(*this);
+    for (int i = 0; i < row; i++)
+    {
+        for (int j = 0; j < col; j++)
+        {
+            b.data[i][j] *= a;
+        }
+    }
+    return b;
+}
 Matrix &Matrix::operator+=(const Matrix &a)
 {
     if (!same_shape(a))
     {
+        std::cout << "wrong shape in +=" << std::endl;
         return *this;
     }
     for (int i = 0; i < row; i++)
@@ -134,10 +160,29 @@ Matrix &Matrix::operator+=(const Matrix &a)
     }
     return *this;
 }
+Matrix &Matrix::operator-=(const Matrix &a)
+{
+    if (!same_shape(a))
+    {
+        std::cout << "wrong shape in -=" << std::endl;
+        return *this;
+    }
+    for (int i = 0; i < row; i++)
+    {
+        for (int j = 0; j < col; j++)
+        {
+            data[i][j] -= a.data[i][j];
+        }
+    }
+    return *this;
+}
 Matrix &Matrix::operator*=(const Matrix &a)
 {
     if (!same_cnr(a))
+    {
+        std::cout << "wrong shape in *=" << std::endl;
         return *this;
+    }
     Matrix b(row, a.col);
 
     for (int i = 0; i < row; i++)
@@ -202,17 +247,117 @@ std::ostream &operator<<(std::ostream &out, const Matrix &m)
     }
     return out;
 }
+Matrix Matrix::hadamard(const Matrix &a)
+{
+    if (!same_shape(a))
+    {
+        std::cout << "wrong shape in hadamard" << std::endl;
+        return *this;
+    }
+    Matrix b(*this);
+    b.hadamard_in(a);
+    return b;
+}
+Matrix &Matrix::hadamard_in(const Matrix &a)
+{
+    if (!same_shape(a))
+    {
+        std::cout << "wrong shape in hadamard_in" << std::endl;
+        return *this;
+    }
+    for (int i = 0; i < row; i++)
+    {
+        for (int j = 0; j < col; j++)
+        {
+            data[i][j] *= a.data[i][j];
+        }
+    }
+    return *this;
+}
+Matrix Matrix::T() const
+{
+    Matrix a(col, row);
+    for (int i = 0; i < row; i++)
+    {
+        for (int j = 0; j < col; j++)
+        {
+            a.data[j][i] = data[i][j];
+        }
+    }
+    return a;
+}
+Matrix Matrix::sum_by_col() const
+{
+    Matrix b(row, 1);
+    b.zero();
+    for (int i = 0; i < row; i++)
+    {
+        for (int j = 0; j < col; j++)
+        {
+            b.data[i][0] += data[i][j];
+        }
+    }
+    return b;
+}
+Matrix Matrix::adds(const Matrix &a) const
+{
+    if (a.col != 1 || row != a.row)
+    {
+        std::cout << "wrong shape!" << std::endl;
+        return *this;
+    }
+    Matrix b(*this);
+    for (int i = 0; i < row; i++)
+    {
+        for (int j = 0; j < col; j++)
+        {
+            b.data[i][j] += a.data[i][0];
+        }
+    }
+    return b;
+}
 int Matrix::random()
 {
-    std::default_random_engine e;
-    std::uniform_real_distribution<double> u(0.0, 1.0);
-    e.seed(std::time(0));
+    static std::default_random_engine e(std::time(0));
+    std::normal_distribution<double> u(0.0, 1.0);
     for (int i = 0; i < row; i++)
     {
         for (int j = 0; j < col; j++)
         {
             data[i][j] = u(e);
         }
+    }
+    return 0;
+}
+int Matrix::reshape(int n, int m)
+{
+    if (data == NULL)
+    {
+        return -2;
+    }
+    if (!((n == -1 && row * col % m == 0) ||
+          (m == -1 && row * col % n == 0) ||
+          n * m == row * col))
+    {
+        return -1;
+    }
+    if (n == -1)
+    {
+        n = row * col / m;
+    }
+    if (m == -1)
+    {
+        m = row * col / n;
+    }
+    double *tmp = data[0];
+    delete[] data;
+    row = n;
+    col = m;
+    data = new double *[n];
+    data[0] = tmp;
+    for (int i = 1; i < n; i++)
+    {
+        data[i] = data[i - 1] + col;
     }
     return 0;
 }
